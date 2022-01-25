@@ -1,0 +1,337 @@
+@use '../utilities/' as *;
+
+.tracker {
+    $root: &;
+    background-image: url('../img/pattern-bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    padding: 0 24px;
+
+    &__container {
+        height: 300px;
+
+        @include breakpoint('md') {
+            height: 280px;
+        }
+    }
+
+    &__search {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+    }
+
+    &__heading {
+        color: $c-white;
+        font-size: 1.45rem;
+        font-weight: 500;
+        line-height: 30px;
+        padding-top: 24px;
+
+        @include breakpoint('md') {
+            font-size: 1.77rem;
+            padding-top: 33px;
+        }
+    }
+
+    &__form {
+        position: relative;
+        display: flex;
+        margin-top: 29px;
+        width: 100%;
+
+        &:focus-within {
+            outline: 2px dashed $c-red;
+            outline-offset: 4px;   
+        }
+
+        @include breakpoint('sm') {
+            max-width: 555px;
+            margin: 29px auto 0 auto;
+        }
+
+        @include breakpoint('md') {
+            margin-top: 31px;
+        }
+
+
+        &::before {
+            visibility: hidden;
+            position: absolute;
+            content: url('../img/icon-error.svg');
+            top: 50%;
+            right: 68px;
+            width: 25px;
+            height: 25px;
+            transform: translateY(-50%);
+
+            @include breakpoint('md') {
+                right: 78px;
+            }
+        }
+
+        &.invalid {
+            &::before {
+                visibility: visible;
+                animation: formInvalid 500ms;
+            }
+        }
+    }
+    
+    &__form-input {
+        padding: 18px 24px;
+        width: 100%;
+        border-radius: 15px 0px 0px 15px;
+        border: none;
+        font-size: 1rem;
+        letter-spacing: 0.26px;
+        color: $c-gray-very-dark;
+        cursor: text;
+
+        &::placeholder {
+            font-family: $ff-primary;
+            color: $c-gray-dark;
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &__form-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 58px;
+        height: 58px;
+        min-width: 58px;
+        border: none;
+        border-radius: 0px 15px 15px 0px;
+        background-color: $c-black;
+        cursor: pointer;
+        transition: background-color 300ms ease-in;
+        
+        @include breakpoint('md') {
+            &:hover {
+                background-color: lighten($c-gray-very-dark, 05);
+            }
+
+            &:active {
+                .i-chevron-right {
+                    font-size: 0.7rem;
+                }
+            }
+        }
+
+        &:focus {
+            outline: none;
+            background-color: lighten($c-gray-very-dark, 05);
+        }
+
+        &:focus:not(:focus-visible) {
+            outline: none;
+            background-color: $c-black;
+        }
+
+        .i-chevron-right {
+            color: $c-white;
+            font-size: 0.8rem;
+        }
+    }
+
+    &__results {
+        position: absolute;
+        top: 166px;
+        width: calc(100% - 48px);
+        padding: 24px;
+        background: $c-white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0px 4px 17px 0px rgba(0,0,0,0.5);
+        z-index: 8;
+
+        @include breakpoint('md') {
+            top: 200px;
+            padding: 37px 32px 32px 36px;
+        }
+
+        @include breakpoint('lg') {
+            max-width: 1110px;
+        }
+
+        &.close {
+            animation: collapse-mobile 500ms cubic-bezier(0.28, -0.19, 1, 0.07) forwards;
+
+            @include breakpoint('md') {
+                animation: collapse-desktop 500ms cubic-bezier(0.28, -0.19, 1, 0.07) forwards;
+            }
+
+            #{$root}__results-wrapper {
+                animation: collapse-opacity 500ms ease-in forwards;
+            }
+        }
+
+        &.open {
+            animation: expand-mobile 500ms ease-in forwards;
+
+            @include breakpoint('md') {
+                animation: expand-desktop 500ms ease-in forwards;
+            }
+
+            #{$root}__results-wrapper {
+                animation: expand-opacity 500ms ease-in forwards;
+            }
+        }
+    }
+
+    &__results-expand {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        border: none;
+        background: none;
+        color: $c-gray-very-dark;
+        font-size: 1.3rem;
+        cursor: pointer;
+        z-index: 2;
+
+        &:active {
+            font-size: 1.4rem;
+        }
+
+        &:focus {
+            outline: 2px dashed $c-red;
+            outline-offset: 2px;
+        }
+
+        &:focus:not(:focus-visible) {
+            outline: none;
+        }
+    }
+
+    &__results-wrapper {
+        display: flex;
+        flex-flow: column;
+        gap: 24px;
+
+        @include breakpoint('md') {
+            flex-flow: row;
+            justify-content: space-between;
+        }
+    }
+
+    &__results-box {
+        text-align: center;
+
+        @include breakpoint('md') {
+            position: relative;
+            text-align: left;
+            max-width: 150px;
+            width: 100%;
+            
+            &:not(:first-child) ::before {
+                position: absolute;
+                content: '';
+                top: 50%;
+                left: -20px;
+                transform: translateY(-50%);
+                width: 1px;
+                height: 75px;
+                background: $c-black;
+                opacity: 0.1;
+            }
+        }
+
+        @include breakpoint('lg') {
+            max-width: 213px;
+
+            &:not(:first-child) ::before {
+                left: -30px;
+            }
+        }
+    }
+
+    &__results-heading {
+        color: $c-gray-dark;
+        font-size: 0.55rem;
+        text-transform: uppercase;
+        letter-spacing: 1.46px;
+
+        @include breakpoint('lg') {
+            font-size: 0.66rem;
+            letter-spacing: 1.75px;
+        }
+    }
+
+    &__results-info {
+        color: $c-gray-very-dark;
+        font-size: 1.11rem;
+        font-weight: 500;
+        letter-spacing: 0.18px;
+        margin: 7px auto 0 auto;
+        max-width: 200px;
+
+        @include breakpoint('md') {
+            margin: 10px 0 0 0;
+        }
+        
+        @include breakpoint('lg') {
+            font-size: 1.44rem;
+            line-height: 30px;
+            margin-top: 13px;
+        }
+    }
+
+    &__loader {
+        position: absolute;
+        display: none;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: $c-white;
+        z-index: 9;
+
+        &.loading {
+            display: flex;
+        }
+    }
+
+    &__loader-wrapper {
+        width: 60px;
+        height: 60px;
+        margin-top: 10px;
+    }
+
+    &__loader-inner {
+        position: absolute;
+        display: block;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        box-shadow: 
+            0 -10px 0 0 rgba(0,77,64, 0.6),
+            -7.5px 5px 0 0 rgba(0,121,107, 0.6),
+            7.5px 5px 0 0 rgba(0,150,136, 0.6);
+        animation: loaderFirst 5s linear infinite;
+
+        &:nth-child(2) {
+            box-shadow: 
+                7.5px -5px 0 0 rgba(49,27,146, 0.6),
+                -7.5px -5px 0 0 rgba(81,45,168, 0.6),
+                0 10px 0 0 rgba(103,58,183, 0.6);
+            animation: loaderSec 5s linear infinite;
+        }
+    }
+
+    &__loader-heading {
+        font-size: 1rem;
+        color: $c-gray-dark;
+        font-weight: 400;
+        margin-top: 30px;
+    }
+}

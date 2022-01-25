@@ -1,11 +1,12 @@
-# Frontend Mentor - IP address tracker
+# IP Tracker Website
+URL https://iptracker.alissanguyen.dev
 
+A landing page for tracking IP addresses.
+
+## What to expect
 ![Design preview for the IP address tracker coding challenge](./design/desktop-preview.jpg)
 
-## Overview
-
-### What to expect
-
+### Usage
 > Users should be able to:
 >
 > - View the optimal layout for each page depending on their device's screen size
